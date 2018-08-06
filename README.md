@@ -2,9 +2,31 @@
 
 `lein check` alternative for [Clojure CLI tool](https://clojure.org/guides/deps_and_cli)
 
+You don't have to have Leiningen to check your codebase anymore :-)
+
 ## Usage
 
-FIXME
+Add the following to your `deps.edn`:
+
+```clj
+:aliases {:check {:extra-deps {athos/clj-check {:git/url "https://github.com/athos/clj-check.git"
+                                                :sha "dde919d1b10af4ee18944a212d914654302c5838"}}
+                  :main-opts ["-m" "clj-check.check"]}}
+```
+
+If your project has its codebase under some directories other than `src` (say `src/clj` and `src/cljc`), specify them as the command line arguments as follows:
+
+```clj
+:aliases {:check {...
+                  :main-opts ["-m" "clj-check.check" "src/clj" "src/cljc"]}}
+```
+
+
+Then, run `clj-check` via the declaced alias:
+
+```
+clj -Acheck
+```
 
 ## License
 
