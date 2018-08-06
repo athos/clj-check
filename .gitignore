@@ -1,5 +1,6 @@
 /target
 /classes
+/.cpcache
 *.jar
 *.class
 .hgignore
