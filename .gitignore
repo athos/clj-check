@@ -1,0 +1,6 @@
+/target
+/classes
+*.jar
+*.class
+.hgignore
+.hg/
