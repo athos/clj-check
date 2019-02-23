@@ -7,11 +7,9 @@
 (defn- file-for [ns] (-> ns name (str/replace \- \_) (str/replace \. \/)))
 
 (defn check [source-paths]
-  (let [source-files (->> (or (seq source-paths) ["src"])
-                          (map io/file))
-        nses         (bultitude/namespaces-on-classpath
-                      :classpath source-files
-                      :ignore-unreadable? false)]
+  (let [nses (bultitude/namespaces-on-classpath
+              :classpath (map io/file source-paths)
+              :ignore-unreadable? false)]
     (let [failures (atom 0)]
       (doseq [ns nses]
         (binding [*out* *err*]
@@ -26,4 +24,4 @@
         (System/exit @failures)))))
 
 (defn -main [& source-paths]
-  (check source-paths))
+  (check (or (seq source-paths) ["src"])))
