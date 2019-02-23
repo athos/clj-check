@@ -22,7 +22,7 @@
           (catch ExceptionInInitializerError e
             (swap! failures inc)
             (.printStackTrace e))))
-      (if-not (zero? @failures)
+      (when-not (zero? @failures)
         (System/exit @failures)))))
 
 (defn -main [& source-paths]
