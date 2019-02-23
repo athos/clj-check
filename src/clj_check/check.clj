@@ -1,12 +1,14 @@
 (ns clj-check.check
-  (:require [bultitude.core :as b]
-            [clojure.java.io :as io]))
+  (:require
+   [bultitude.core :as bultitude]
+   [clojure.java.io :as io]))
 
 (defn check [source-paths]
   (let [source-files (->> (or (seq source-paths) ["src"])
                           (map io/file))
-        nses (b/namespaces-on-classpath :classpath source-files
-                                        :ignore-unreadable? false)]
+        nses         (bultitude/namespaces-on-classpath
+                      :classpath source-files
+                      :ignore-unreadable? false)]
     (let [failures (atom 0)]
       (doseq [ns nses]
         (let [ns-file (-> (str ns)
