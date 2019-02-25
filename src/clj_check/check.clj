@@ -6,7 +6,7 @@
 
 (defn- file-for [ns] (-> ns name (str/replace \- \_) (str/replace \. \/)))
 
-(defn- reflection-error
+(defn- check-ns
   [ns]
   (binding [*out* *err*]
     (println "Compiling namespace" ns))
@@ -23,7 +23,7 @@
                     :ignore-unreadable? false)
         failures   (count
                     (sequence
-                     (comp (map reflection-error) (remove nil?))
+                     (comp (map check-ns) (remove nil?))
                      namespaces))]
     (when-not (zero? failures)
       (System/exit failures))))
