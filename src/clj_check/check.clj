@@ -1,27 +1,32 @@
 (ns clj-check.check
-  (:require [bultitude.core :as b]
-            [clojure.java.io :as io]))
+  (:require
+   [bultitude.core :as bultitude]
+   [clojure.java.io :as io]
+   [clojure.string :as str]))
 
-(defn check [source-paths]
-  (let [source-files (->> (or (seq source-paths) ["src"])
-                          (map io/file))
-        nses (b/namespaces-on-classpath :classpath source-files
-                                        :ignore-unreadable? false)]
-    (let [failures (atom 0)]
-      (doseq [ns nses]
-        (let [ns-file (-> (str ns)
-                          (.replace \- \_)
-                          (.replace \. \/))]
-          (binding [*out* *err*]
-            (println "Compiling namespace" ns))
-          (try
-            (binding [*warn-on-reflection* true]
-              (load ns-file))
-            (catch ExceptionInInitializerError e
-              (swap! failures inc)
-              (.printStackTrace e)))))
-      (if-not (zero? @failures)
-        (System/exit @failures)))))
+(defn- file-for [ns] (-> ns name (str/replace \- \_) (str/replace \. \/)))
+
+(defn- check-ns
+  [ns]
+  (binding [*out* *err*]
+    (println "Compiling namespace" ns))
+  (try
+    (binding [*warn-on-reflection* true]
+      (load (file-for ns)))
+    (catch ExceptionInInitializerError e
+      (doto e .printStackTrace))))
+
+(defn check
+  [source-paths]
+  (let [namespaces (bultitude/namespaces-on-classpath
+                    :classpath (map io/file source-paths)
+                    :ignore-unreadable? false)
+        failures   (count
+                    (sequence
+                     (comp (map check-ns) (remove nil?))
+                     namespaces))]
+    (when-not (zero? failures)
+      (System/exit failures))))
 
 (defn -main [& source-paths]
-  (check source-paths))
+  (check (or (seq source-paths) ["src"])))

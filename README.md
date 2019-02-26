@@ -22,7 +22,7 @@ If your project has its codebase under some directories other than `src` (say `s
 ```
 
 
-Then, run `clj-check` via the declaced alias:
+Then, run `clj-check` via the declared alias:
 
 ```
 clj -Acheck
