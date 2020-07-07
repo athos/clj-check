@@ -25,6 +25,7 @@
                     (sequence
                      (comp (map check-ns) (remove nil?))
                      namespaces))]
+    (shutdown-agents)
     (when-not (zero? failures)
       (System/exit failures))))
 
