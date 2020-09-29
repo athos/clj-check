@@ -24,8 +24,16 @@ If your project has its codebase under some directories other than `src` (say `s
 
 Then, run `clj-check` via the declared alias:
 
+For clj versions 1.10.1.697 and greater:
+
 ```
 clj -M:check
+```
+
+For older versions:
+
+```
+clj -A:check
 ```
 
 ## License
