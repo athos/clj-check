@@ -10,7 +10,7 @@ Add the following to your `deps.edn`:
 
 ```clj
 :aliases {:check {:extra-deps {athos/clj-check {:git/url "https://github.com/athos/clj-check.git"
-                                                :sha "da6363a38b06d9b84976ed330a9544b69d3c4dee"}}
+                                                :sha "0ca84df1357d71429243b99908303f45a934654c"}}
                   :main-opts ["-m" "clj-check.check"]}}
 ```
 
