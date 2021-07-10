@@ -10,30 +10,22 @@ Add the following to your `deps.edn`:
 
 ```clj
 :aliases {:check {:extra-deps {athos/clj-check {:git/url "https://github.com/athos/clj-check.git"
-                                                :sha "0ca84df1357d71429243b99908303f45a934654c"}}
-                  :main-opts ["-m" "clj-check.check"]}}
+                                                :sha "518d5a1cbfcd7c952f548e6dbfcb9a4a5faf9062
+                  :exec-fn clj-check.check/check
 ```
 
 If your project has its codebase under some directories other than `src` (say `src/clj` and `src/cljc`), specify them as the command line arguments as follows:
 
 ```clj
 :aliases {:check {...
-                  :main-opts ["-m" "clj-check.check" "src/clj" "src/cljc"]}}
+                  :exec-args {:source-paths ["src/clj" "src/cljc"]}}}
 ```
 
 
 Then, run `clj-check` via the declared alias:
 
-For clj versions 1.10.1.697 and greater:
-
 ```
-clj -M:check
-```
-
-For older versions:
-
-```
-clj -A:check
+clj -X:check
 ```
 
 ## License
