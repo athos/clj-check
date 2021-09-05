@@ -23,6 +23,7 @@
                     :classpath (map io/file source-paths)
                     :ignore-unreadable? false)
         failures   (count (keep check-ns namespaces))]
+    (shutdown-agents)
     (when-not (zero? failures)
       (System/exit failures))))
 
