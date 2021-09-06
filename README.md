@@ -9,31 +9,37 @@ You don't have to have Leiningen to check your codebase anymore :-)
 Add the following to your `deps.edn`:
 
 ```clj
-:aliases {:check {:extra-deps {athos/clj-check {:git/url "https://github.com/athos/clj-check.git"
-                                                :sha "0ca84df1357d71429243b99908303f45a934654c"}}
-                  :main-opts ["-m" "clj-check.check"]}}
+:aliases
+ {:check
+  {:extra-deps
+   {com.github.athos/clj-check
+    {:git/url "https://github.com/athos/clj-check.git"
+     :sha     "9e9282a6455f58a2015d267ad503b812ec6cdeb3"}}
+   :exec-fn clj-check.check/check}
 ```
 
 If your project has its codebase under some directories other than `src` (say `src/clj` and `src/cljc`), specify them as the command line arguments as follows:
 
 ```clj
-:aliases {:check {...
-                  :main-opts ["-m" "clj-check.check" "src/clj" "src/cljc"]}}
+:aliases
+ {:check
+  {...
+   :exec-args
+    {:source-paths ["src/clj" "src/cljc"]}}}
 ```
 
 
 Then, run `clj-check` via the declared alias:
 
-For clj versions 1.10.1.697 and greater:
-
 ```
-clj -M:check
+clj -X:check
 ```
 
-For older versions:
+OR
 
+Run `clj-check` with CLI overrides
 ```
-clj -A:check
+clj -X:check :source-paths "[\"src/clj\"]"
 ```
 
 ## License

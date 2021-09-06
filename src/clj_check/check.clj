@@ -17,17 +17,16 @@
       (doto e .printStackTrace))))
 
 (defn check
-  [source-paths]
+  [{:keys [source-paths]
+    :or   {source-paths ["src"]}}]
   (let [namespaces (bultitude/namespaces-on-classpath
                     :classpath (map io/file source-paths)
                     :ignore-unreadable? false)
-        failures   (count
-                    (sequence
-                     (comp (map check-ns) (remove nil?))
-                     namespaces))]
+        failures   (count (keep check-ns namespaces))]
     (shutdown-agents)
     (when-not (zero? failures)
       (System/exit failures))))
 
-(defn -main [& source-paths]
-  (check (or (seq source-paths) ["src"])))
+(defn -main
+  [& source-paths]
+  (check {:source-paths source-paths}))
